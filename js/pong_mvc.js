@@ -15,9 +15,30 @@
     self.Board.prototype = {
         get elements() {
             var elements = this.bars.map(function (bar) { return bar; });
-            //elements.push(this.ball);
+            elements.push(this.ball);
             return elements;
         }
+    }
+
+})();
+
+//Metodo que permite construir la bola
+(function () {
+    self.Ball = function (x, y, radius, board) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.speed = 3;
+        this.speed_y = 0;
+        this.speed_x = 3;
+        this.board = board;
+        this.direction = 1;
+        this.bounce_angle = 0;
+        this.max_bounce_angle = Math.PI / 12;
+
+        board.ball = this;
+        this.kind = "circle";
+
     }
 
 })();
@@ -85,6 +106,12 @@
             case "rectangle":
                 ctx.fillRect(element.x, element.y, element.width, element.height);
                 break;
+            case "circle":
+                ctx.beginPath();
+                ctx.arc(element.x, element.y, element.radius, 0, 7);
+                ctx.fill();
+                ctx.closePath();
+                break;
         }
     }
 })();
@@ -95,6 +122,7 @@ var bar = new Bar(20, 150, 40, 100, board);
 var bar_2 = new Bar(735, 150, 40, 100, board);
 var canvas = document.getElementById('canvas');
 var board_view = new BoardView(canvas, board);
+var ball = new Ball(400, 150, 15, board);
 
 
 /**Condicionales que nos permitiran tocar decisiones de acuerdo a la tecla que se presione:
