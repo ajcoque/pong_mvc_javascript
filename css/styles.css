@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+}
+
+#title{
+    padding: 5%;
+}
+
+canvas{
+    border: solid;
+}
