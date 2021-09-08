@@ -41,6 +41,14 @@
 
     }
 
+    self.Ball.prototype = {
+        //Se agrega funcion para que la bola se mueva
+        move: function () {
+            this.x += (this.speed_x * this.direction);
+            this.y += (this.speed_y);
+        }
+    }
+
 })();
 
 //Vista
@@ -96,8 +104,11 @@
             };
         },
         play: function () {
-            this.clean();
-            this.draw();
+            if (this.board.playing) {
+                this.clean();
+                this.draw();
+                this.board.ball.move();
+            }
         }
     }
 
@@ -143,6 +154,9 @@ document.addEventListener("keydown", function (ev) {
     } else if (ev.keyCode == 40) {
         ev.preventDefault();
         bar_2.down();
+    } else if (ev.keyCode == 32) {
+        ev.preventDefault();
+        board.playing = !board.playing;
     }
 });
 
