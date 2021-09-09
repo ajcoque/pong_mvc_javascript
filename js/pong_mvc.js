@@ -94,13 +94,13 @@
         up: function () {
             this.y -= this.speed;
         },
-    
+
         toString: function () {
             return "x: " + this.x + " y: " + this.y;
         }
 
-    }   
-    
+    }
+
 })();
 
 /*funcion anonima que se llama a si misma para mostrar el tablero con sus respectivas medidas*/
@@ -130,28 +130,28 @@
         //Funcion que permite establecer si la bola choco con la barra
         check_collisions: function () {
             for (var i = this.board.bars.length - 1; i >= 0; i--) {
-                var bar = this.board.bars[i];        
+                var bar = this.board.bars[i];
                 if (hit(bar, this.board.ball)) {
                     this.board.ball.collision(bar);
                 }
             }
 
-            if ( hit(this.board.bars[2], this.board.bars[0]) ) {
+            if (hit(this.board.bars[2], this.board.bars[0])) {
                 console.log("limite superior detectado");
                 this.board.bars[0].x = 20;
                 this.board.bars[0].y = 0;
             }
-            if ( hit(this.board.bars[3], this.board.bars[0]) ) {
+            if (hit(this.board.bars[3], this.board.bars[0])) {
                 console.log("limite inferior detectado");
                 this.board.bars[0].x = 20;
                 this.board.bars[0].y = 300;
             }
-            if ( hit(this.board.bars[2], this.board.bars[1]) ) {
+            if (hit(this.board.bars[2], this.board.bars[1])) {
                 console.log("limite superior detectado");
                 this.board.bars[1].x = 735;
                 this.board.bars[1].y = 0;
             }
-            if ( hit(this.board.bars[3], this.board.bars[1]) ) {
+            if (hit(this.board.bars[3], this.board.bars[1])) {
                 console.log("limite inferior detectado");
                 this.board.bars[1].x = 735;
                 this.board.bars[1].y = 300;
@@ -160,13 +160,13 @@
                 console.log("Se paso el limite");
                 this.game_over = true;
             }
-            
+
         },
 
         play: function () {
-            if(this.game_over){
+            if (this.game_over) {
                 alert("La partida ha terminado");
-                this.game_over=false;
+                this.game_over = false;
                 this.board.ball = new Ball(400, 150, 15, this.board);
                 this.board.bars[0].x = 20;
                 this.board.bars[0].y = 150;
@@ -180,10 +180,10 @@
                 this.check_collisions();
                 this.board.ball.move();
             }
-            
+
         },
 
-        
+
     }
 
     function hit(a, b) {
