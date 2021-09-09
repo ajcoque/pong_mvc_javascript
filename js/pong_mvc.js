@@ -34,11 +34,9 @@
         this.board = board;
         this.direction = 1;
         this.bounce_angle = 0;
-        this.max_bounce_angle = Math.PI / 12;
-
+        this.max_bounce_angle = Math.PI / 15;
         board.ball = this;
         this.kind = "circle";
-
     }
 
     self.Ball.prototype = {
@@ -84,20 +82,25 @@
         this.board.bars.push(this);
         this.kind = "rectangle";
         this.speed = 10;
+
     }
     //Se agregan los metodos que permitiran mover las barras
     self.Bar.prototype = {
+
         down: function () {
             this.y += this.speed;
         },
+
         up: function () {
             this.y -= this.speed;
         },
+    
         toString: function () {
             return "x: " + this.x + " y: " + this.y;
         }
-    }
 
+    }   
+    
 })();
 
 /*funcion anonima que se llama a si misma para mostrar el tablero con sus respectivas medidas*/
@@ -127,21 +130,60 @@
         //Funcion que permite establecer si la bola choco con la barra
         check_collisions: function () {
             for (var i = this.board.bars.length - 1; i >= 0; i--) {
-                var bar = this.board.bars[i];
+                var bar = this.board.bars[i];        
                 if (hit(bar, this.board.ball)) {
                     this.board.ball.collision(bar);
                 }
             }
+
+            if ( hit(this.board.bars[2], this.board.bars[0]) ) {
+                console.log("limite superior detectado");
+                this.board.bars[0].x = 20;
+                this.board.bars[0].y = 0;
+            }
+            if ( hit(this.board.bars[3], this.board.bars[0]) ) {
+                console.log("limite inferior detectado");
+                this.board.bars[0].x = 20;
+                this.board.bars[0].y = 300;
+            }
+            if ( hit(this.board.bars[2], this.board.bars[1]) ) {
+                console.log("limite superior detectado");
+                this.board.bars[1].x = 735;
+                this.board.bars[1].y = 0;
+            }
+            if ( hit(this.board.bars[3], this.board.bars[1]) ) {
+                console.log("limite inferior detectado");
+                this.board.bars[1].x = 735;
+                this.board.bars[1].y = 300;
+            }
+            if (hit(this.board.bars[4], this.board.ball) || hit(this.board.bars[5], this.board.ball)) {
+                console.log("Se paso el limite");
+                this.game_over = true;
+            }
+            
         },
 
         play: function () {
+            if(this.game_over){
+                alert("La partida ha terminado");
+                this.game_over=false;
+                this.board.ball = new Ball(400, 150, 15, this.board);
+                this.board.bars[0].x = 20;
+                this.board.bars[0].y = 150;
+                this.board.bars[1].x = 735;
+                this.board.bars[1].y = 150;
+                this.board.playing = true;
+            }
             if (this.board.playing) {
                 this.clean();
                 this.draw();
                 this.check_collisions();
                 this.board.ball.move();
             }
-        }
+            
+        },
+
+        
     }
 
     function hit(a, b) {
@@ -186,6 +228,10 @@
 var board = new Board(800, 400);
 var bar = new Bar(20, 150, 40, 100, board);
 var bar_2 = new Bar(735, 150, 40, 100, board);
+var limite_superior = new Bar(0, 0, 800, 5, board);
+var limite_inferior = new Bar(0, 395, 800, 5, board);
+var limite_izquierda = new Bar(0, 0, 5, 400, board);
+var limite_derecha = new Bar(795, 0, 5, 400, board);
 var canvas = document.getElementById('canvas');
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(400, 150, 15, board);
@@ -225,3 +271,4 @@ function controller() {
     board_view.play();
     self.requestAnimationFrame(controller);
 }
+
